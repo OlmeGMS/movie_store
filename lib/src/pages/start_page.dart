@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie_store/src/blocs/theme.dart';
 import 'package:movie_store/src/providers/movie_provider.dart';
 import 'package:movie_store/src/search/search_delegate.dart';
-import 'package:movie_store/src/widgets/card_swiper_widget.dart';
 import 'package:movie_store/src/widgets/movie_horizontal_widget.dart';
+import 'package:provider/provider.dart';
 
 class Startpage extends StatefulWidget {
   Startpage({Key key}) : super(key: key);
@@ -17,7 +18,7 @@ class _StartpageState extends State<Startpage> {
   Widget build(BuildContext context) {
     peliculasProvider.getPopulares();
     return Scaffold(
-      backgroundColor: Color.fromRGBO(2, 24, 41, 0.9),
+      //backgroundColor: Color.fromRGBO(2, 24, 41, 0.9),
       body: getBody(context),
     );
   }
@@ -45,9 +46,10 @@ class _StartpageState extends State<Startpage> {
             Text(
               'Hello, what do you\nwant to watch?',
               style: TextStyle(
-                  fontSize: 35.0,
-                  color: Colors.white,
-                  backgroundColor: Color.fromRGBO(70, 162, 237, 0)),
+                fontSize: 35.0,
+                color: Colors.white,
+                //backgroundColor: Color.fromRGBO(70, 162, 237, 0)
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -62,9 +64,10 @@ class _StartpageState extends State<Startpage> {
                 child: TextField(
                   controller: TextEditingController(text: 'search you movie'),
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      backgroundColor: Color.fromRGBO(70, 162, 237, 0)),
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    //backgroundColor: Color.fromRGBO(70, 162, 237, 0)
+                  ),
                   cursorColor: Color(0xFFF46A2ED),
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
@@ -101,37 +104,41 @@ class _StartpageState extends State<Startpage> {
       margin: EdgeInsets.only(top: size.height * 0.35),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Color.fromRGBO(2, 24, 41, 0.9),
+          //color: Color.fromRGBO(2, 24, 41, 0.9),
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(25)),
       child: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Align(
-              child: Container(
-                width: 150,
-                height: 7,
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(10)),
-              ),
-            ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
-            Text(
-              'RECOMMENDED FOR YOU',
-              style:
-                  TextStyle(fontSize: 14.0, height: 1.5, color: Colors.white),
-            ),
-            SizedBox(
-              height: 20,
+            Row(
+              children: <Widget>[
+                Text(
+                  'RECOMMENDED FOR YOU',
+                  style: Theme.of(context).textTheme.bodyText1,
+                  /*style: TextStyle(
+                      fontSize: 14.0, height: 1.5, color: Colors.white),*/
+                ),
+                SizedBox(
+                  width: 100,
+                ),
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  color: Theme.of(context).backgroundColor,
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'config');
+                  },
+                ),
+              ],
             ),
             _firstMovie(),
             Text(
               'TOP RATED',
-              style:
-                  TextStyle(fontSize: 14.0, height: 0.3, color: Colors.white),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(
               height: 10,

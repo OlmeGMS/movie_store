@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:movie_store/src/blocs/theme.dart';
+import 'package:movie_store/src/pages/config_page.dart';
 import 'package:movie_store/src/pages/detail_page.dart';
-import 'package:movie_store/src/pages/home_page.dart';
 import 'package:movie_store/src/pages/start_page.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ThemeData appTheme = ThemeData(
-      primaryColorDark: Color(0xFFF46A2ED),
-      primaryColorLight: Color(0xFFF46A2ED),
-      primaryColor: Color(0xFFF46A2ED),
+    return ChangeNotifierProvider(
+      create: (_) => ThemeChanger(ThemeData.dark()),
+      child: MaterialAPPWithTheme(),
     );
+  }
+}
+
+class MaterialAPPWithTheme extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: theme.getTheme(),
       title: 'Movie App',
-      theme: appTheme,
       initialRoute: '/',
       routes: {
         '/': (BuildContext context) => Startpage(),
         'detalle': (BuildContext context) => DetailPage(),
+        'config': (BuildContext context) => ConfigPage()
       },
     );
   }

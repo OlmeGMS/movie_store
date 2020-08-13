@@ -9,22 +9,22 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-        backgroundColor: Color.fromRGBO(2, 24, 41, 0.9),
+        //backgroundColor: Color.fromRGBO(2, 24, 41, 0.9),
         body: CustomScrollView(
-          slivers: <Widget>[
-            _crearAppbar(pelicula),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                SizedBox(
-                  height: 10.0,
-                ),
-                _posterTitulo(context, pelicula),
-                _descripcion(pelicula),
-                _crearCasting(pelicula)
-              ]),
-            )
-          ],
-        ));
+      slivers: <Widget>[
+        _crearAppbar(pelicula),
+        SliverList(
+          delegate: SliverChildListDelegate([
+            SizedBox(
+              height: 10.0,
+            ),
+            _posterTitulo(context, pelicula),
+            _descripcion(context, pelicula),
+            _crearCasting(context, pelicula)
+          ]),
+        )
+      ],
+    ));
   }
 
   Widget _crearAppbar(Pelicula pelicula) {
@@ -73,12 +73,8 @@ class DetailPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(pelicula.title,
-                    //style: Theme.of(context).textTheme.headline6,
-                    style: TextStyle(color: Colors.white),
-                    overflow: TextOverflow.ellipsis),
-                Text(pelicula.originalTitle,
-                    //style: Theme.of(context).textTheme.subtitle1,
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.headline6,
+                    //style: TextStyle(color: Colors.white),
                     overflow: TextOverflow.ellipsis),
                 Row(
                   children: <Widget>[
@@ -87,8 +83,8 @@ class DetailPage extends StatelessWidget {
                       color: Colors.yellow,
                     ),
                     Text(pelicula.voteAverage.toString(),
-                        //style: Theme.of(context).textTheme.subtitle1)
-                        style: TextStyle(color: Colors.white)),
+                        style: Theme.of(context).textTheme.subtitle1)
+                    //style: TextStyle(color: Colors.white)),
                   ],
                 )
               ],
@@ -99,24 +95,24 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _descripcion(Pelicula pelicula) {
+  Widget _descripcion(BuildContext context, Pelicula pelicula) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-      child: Text(
-        pelicula.overview,
-        textAlign: TextAlign.justify,
-        style: TextStyle(color: Colors.white70),
-      ),
+      child: Text(pelicula.overview,
+          textAlign: TextAlign.justify,
+          style: Theme.of(context).textTheme.subtitle1
+          //style: TextStyle(color: Colors.white70),
+          ),
     );
   }
 
-  Widget _crearCasting(Pelicula pelicula) {
+  Widget _crearCasting(BuildContext context, Pelicula pelicula) {
     final peliProvider = new MovieProvider();
     return FutureBuilder(
       future: peliProvider.getCast(pelicula.id.toString()),
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          return _crearActoresPageView(snapshot.data);
+          return _crearActoresPageView(context, snapshot.data);
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -124,18 +120,18 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Widget _crearActoresPageView(List<Actor> actores) {
+  Widget _crearActoresPageView(BuildContext context, List<Actor> actores) {
     return SizedBox(
       height: 200.0,
       child: PageView.builder(
           pageSnapping: false,
           controller: PageController(viewportFraction: 0.3, initialPage: 1),
           itemCount: actores.length,
-          itemBuilder: (context, i) => _actorTarjeta(actores[i])),
+          itemBuilder: (context, i) => _actorTarjeta(context, actores[i])),
     );
   }
 
-  Widget _actorTarjeta(Actor actor) {
+  Widget _actorTarjeta(BuildContext context, Actor actor) {
     return Container(
       child: Column(
         children: <Widget>[
@@ -149,11 +145,11 @@ class DetailPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Text(
-            actor.name,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white70),
-          )
+          Text(actor.name,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.subtitle1
+              //style: TextStyle(color: Colors.white70),
+              )
         ],
       ),
     );
