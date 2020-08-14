@@ -101,7 +101,7 @@ class _StartpageState extends State<Startpage> {
   Widget _bodyMovies(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(top: size.height * 0.35),
+      margin: EdgeInsets.only(top: size.height * 0.40),
       width: double.infinity,
       decoration: BoxDecoration(
           //color: Color.fromRGBO(2, 24, 41, 0.9),
